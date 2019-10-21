@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>fetch and graph CSV Train: Data/APIs 1</title>
+  </head>
+  <body>
+    <script>
+      // Data From: https://data.giss.nasa.gov/gistemp/
+      // Mean From: https//earthobservatory.nasa.gov/world-of
+
+      async function getData() {
+        const response = await fetch("ZonAnn.Ts+dSST.csv");
+        const data = await response.text();
+
+        const table = data.split("\n").slice(1); // indicates a new line/ line break
+        table.forEach(row => {
+          const columis = row.split(","); // for each row split by commas
+          const year = columis[0];
+          const temp = columis[1];
+          console.log(year, temp);
+        });
+      }
+      // 1. we want to splt up all the rows using split() each row split into columins
+      // line breake it the separator (delimator)
+      //2. slice () to remove first row/ makes copy of an array
+      //3. split rows into fields - foreach is a higher order function that allows me to apply someinthing to every element of the array
+    </script>
+  </body>
+</html>
