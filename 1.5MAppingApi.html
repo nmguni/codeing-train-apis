@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <script
+      src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
+      integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
+      crossorigin=""
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
+      integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+      crossorigin=""
+    />
+
+    <title>1.5: JSON - Working with Data and APIs in JavaScript</title>
+  </head>
+  <body>
+    <style>
+      #issMap {
+        height: 300px;
+        width: 100%;
+      }
+    </style>
+    <h3>where is the ISS?</h3>
+    <p>
+      LAT: <span id="lat">loading</span> <br />
+      LONG: <span id="long">loading</span>
+    </p>
+    <div id="issMap"></div>
+    <!-- script -->
+    <script>
+      // map object
+      const mymap = L.map("issMap").setView([0, 0], 1);
+      const marker = L.marker([0, 0].addTo(maymap));
+
+      //   tiles
+      const attribution =
+        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+      const tileUrl = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
+
+      const tiles = L.tileLayer(tileUrl, { attribution });
+      tiles.addTo(mymap);
+
+      //   const marker = L.marker([0, 0], { icon: issIcon }).addTo(mymap);
+
+      const api_url = "https://api.wheretheiss.at/v1/satellites/25544";
+
+      async function getISS() {
+        const respone = await fetch(api_iss_url);
+        const data = await respone.json();
+        const { latitude, longitude } = data;
+
+        L.marker([latitude, longitude]).addTo(mymap);
+
+        document.getElementById("lat").textContent = latitude;
+        document.getElementById("long").textContent = longitude;
+      }
+
+      setInterval(() => {
+        // getISS();
+      }, 3000);
+    </script>
+  </body>
+</html>
